@@ -42,4 +42,7 @@ public class FourBarLinkageSystem extends Subsystem {
   public void looosen() {
     pusher.set(false);
   }
+  public void stop() {
+    winchPneumatic.set(ControlMode.PercentOutput, 0);
+  }
 }
