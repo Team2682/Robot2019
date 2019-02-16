@@ -10,12 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MastGoUp extends Command {
-  boolean auxStick;
+public class MastMove extends Command {
+  boolean auxStick = false;
 
-  public MastGoUp() {
+  public MastMove() {
     requires(Robot.mast);
 
+  }
+
+  public MastMove(boolean auxStick) {
+    this.auxStick = auxStick;
+    requires(Robot.mast);
   }
 
   // Called just before this Command runs the first time
@@ -27,8 +32,8 @@ public class MastGoUp extends Command {
   @Override
   protected void execute() {
     if (auxStick) {
-      if (Robot.oi.auxStick.getRawAxis(1) > .3 || Robot.oi.auxStick.getRawAxis(1) > -.3) {
-        Robot.mast.goUp(Robot.oi.auxStick.getRawAxis(1));
+      if (Robot.oi.auxStick.getRawAxis(1) > .3 || Robot.oi.auxStick.getRawAxis(1) < -.3) {
+        Robot.mast.move(Robot.oi.auxStick.getY());
       } else {
         Robot.mast.stop();
       }
