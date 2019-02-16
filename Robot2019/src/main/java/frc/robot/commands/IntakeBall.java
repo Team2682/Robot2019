@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class IntakeBall extends Command {
+
   double speed;
   int time;
   Timer timer;
