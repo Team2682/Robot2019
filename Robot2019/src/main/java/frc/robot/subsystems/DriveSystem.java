@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.TeleopDriveCommand;
@@ -27,6 +28,8 @@ public class DriveSystem extends Subsystem {
 
   TalonSRX motorLeftSlave;
   TalonSRX motorRightSlave;
+
+  PigeonIMU pigeon;
 
   double error;
 
@@ -54,6 +57,8 @@ public class DriveSystem extends Subsystem {
 
     error = motorLeftMaster.getClosedLoopError(0);
 
+    pigeon = new PigeonIMU(motorLeftSlave);
+
   }
 
   @Override
@@ -76,5 +81,21 @@ public class DriveSystem extends Subsystem {
   public void stop() {
     motorLeftMaster.set(ControlMode.PercentOutput, 0);
     motorRightMaster.set(ControlMode.PercentOutput, 0);
+  }
+
+  public double getDistanceLeft() {
+    return motorLeftMaster.getSelectedSensorPosition(0);
+  }
+
+  public double getDistanceRight() {
+    return motorRightMaster.getSelectedSensorPosition(0);
+  }
+
+  public double getYaw() {
+    return pigeon.getFusedHeading();
+  }
+
+  public void resetYaw() {
+    pigeon.setFusedHeading(0);
   }
 }
