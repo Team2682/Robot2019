@@ -10,17 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MastGoDownCommand extends Command {
-
+public class MastGoUp extends Command {
   boolean auxStick;
 
-  public MastGoDownCommand() {
+  public MastGoUp() {
     requires(Robot.mast);
-  }
 
-  public MastGoDownCommand(boolean auxStick) {
-    requires(Robot.mast);
-    this.auxStick = auxStick;
   }
 
   // Called just before this Command runs the first time
@@ -31,6 +26,13 @@ public class MastGoDownCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (auxStick) {
+      if (Robot.oi.auxStick.getRawAxis(1) > .3 || Robot.oi.auxStick.getRawAxis(1) > -.3) {
+        Robot.mast.goUp(Robot.oi.auxStick.getRawAxis(1));
+      } else {
+        Robot.mast.stop();
+      }
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -42,11 +44,13 @@ public class MastGoDownCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.mast.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.mast.stop();
   }
 }
