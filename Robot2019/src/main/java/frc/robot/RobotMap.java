@@ -24,4 +24,7 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
   final public static int MAST_TICKS_PER_INCH = 0;
+
+  public static int compressorPort = 5;
+
 }
