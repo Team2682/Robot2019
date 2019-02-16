@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.IntakeSystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +25,7 @@ import frc.robot.subsystems.DriveSystem;
 public class Robot extends TimedRobot {
   public static DriveSystem drive;
 
+  public static IntakeSystem intake;
   public static OI oi;
 
   Command selectedAuto;
@@ -38,6 +40,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = new OI();
     drive = new DriveSystem(0, 1);
+    intake = new IntakeSystem();
     drive.initializeMotors();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", autoChooser);

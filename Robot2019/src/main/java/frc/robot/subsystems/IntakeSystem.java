@@ -10,14 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Add your docs here.
  */
