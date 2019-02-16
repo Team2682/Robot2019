@@ -8,13 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class MastGoDownCommand extends Command {
 
   boolean auxStick;
 
   public MastGoDownCommand() {
+    requires(Robot.mast);
+  }
 
+  public MastGoDownCommand(boolean auxStick) {
+    requires(Robot.mast);
+    this.auxStick = auxStick;
   }
 
   // Called just before this Command runs the first time
