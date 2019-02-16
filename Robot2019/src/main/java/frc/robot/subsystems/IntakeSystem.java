@@ -36,11 +36,6 @@ public class IntakeSystem extends Subsystem {
     vertL.set(ControlMode.PercentOutput, vertical);
     horz.set(ControlMode.PercentOutput, horizontal);
   }
-  public void outTake(double vertical, double horizontal ) {
-    vertR.set(ControlMode.PercentOutput, -vertical);
-    vertL.set(ControlMode.PercentOutput, -vertical);
-    horz.set(ControlMode.PercentOutput, -horizontal);
-  }
   public void stop(){
     vertR.set(ControlMode.PercentOutput,0);
     vertL.set(ControlMode.PercentOutput,0);

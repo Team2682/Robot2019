@@ -11,17 +11,17 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeBall extends Command {
+public class OutTakeBall extends Command {
   double speed;
   int time;
   Timer timer;
   boolean isFinished = false;
 
-  public IntakeBall(double percentSpeed, int deciSeconds) {
+  public OutTakeBall(double percentSpeed, int deciSeconds) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.intake);
-    speed = percentSpeed;
+    speed = -percentSpeed;
     time = deciSeconds;
 
   }
