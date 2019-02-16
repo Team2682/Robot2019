@@ -9,16 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class MastGoDownCommand extends Command {
-  double distance;
+public class MastUpAutoDistance extends Command {
+  double ticks;
 
-  public MastGoDownCommand(double distance) {
+  public MastUpAutoDistance(double inches) {
     requires(Robot.mast);
-    this.distance = distance;
+    this.ticks = inches * RobotMap.MAST_TICKS_PER_INCH;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
@@ -26,12 +26,13 @@ public class MastGoDownCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.mast.goUp(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.mast.getDistance() 
   }
 
   // Called once after isFinished returns true

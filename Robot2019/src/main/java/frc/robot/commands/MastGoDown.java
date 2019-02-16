@@ -10,15 +10,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MastGoUp extends Command {
+public class MastGoDown extends Command {
   boolean auxStick = false;
 
-  public MastGoUp() {
+  public MastGoDown() {
     requires(Robot.mast);
 
   }
 
-  public MastGoUp(boolean auxStick) {
+  public MastGoDown(boolean auxStick) {
     this.auxStick = auxStick;
     requires(Robot.mast);
   }
