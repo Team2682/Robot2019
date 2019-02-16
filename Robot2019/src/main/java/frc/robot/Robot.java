@@ -7,12 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.FourBarLinkageSystem;
 import frc.robot.subsystems.IntakeSystem;
 
 /**
@@ -27,8 +29,11 @@ public class Robot extends TimedRobot {
 
   public static IntakeSystem intake;
   public static OI oi;
+  public static final FourBarLinkageSystem linkage = new FourBarLinkageSystem();
 
   Command selectedAuto;
+
+  Compressor c = new Compressor(5);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -42,8 +47,17 @@ public class Robot extends TimedRobot {
     drive = new DriveSystem(0, 1);
     intake = new IntakeSystem();
     drive.initializeMotors();
+    
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", autoChooser);
+
+    //c.setClosedLoopControl(true);
+    c.setClosedLoopControl(false); 
+
+    boolean enabled = c.enabled();
+    boolean pressureSwitch = c.getPressureSwitchValue();
+    double current = c.getCompressorCurrent();
+
   }
 
   /**
