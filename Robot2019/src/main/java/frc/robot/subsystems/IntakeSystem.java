@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -17,8 +18,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 /**
  * Add your docs here.
  */
@@ -29,19 +28,29 @@ public class IntakeSystem extends Subsystem {
   public VictorSPX vertL= new VictorSPX(0);
   public VictorSPX horz= new VictorSPX(0); 
 
+  public IntakeSystem() {
+
+  }
   @Override
   public void initDefaultCommand() {
+    
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public void intake(){
-
+  public void intake(double vertical, double horizontal ) {
+    vertR.set(ControlMode.PercentOutput, vertical);
+    vertL.set(ControlMode.PercentOutput, vertical);
+    horz.set(ControlMode.PercentOutput, horizontal);
   }
-
-  public void outtake(){
-
+  public void outTake(double vertical, double horizontal ) {
+    vertR.set(ControlMode.PercentOutput, -vertical);
+    vertL.set(ControlMode.PercentOutput, -vertical);
+    horz.set(ControlMode.PercentOutput, -horizontal);
   }
-
-
+  public void stop(){
+    vertR.set(ControlMode.PercentOutput,0);
+    vertL.set(ControlMode.PercentOutput,0);
+    horz.set(ControlMode.PercentOutput,0);
+  }
 }
