@@ -9,18 +9,24 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.PIDCorrection;
 
-public class MastGoDownCommand extends Command {
+public class DriveByGyro extends Command {
 
-  boolean auxStick;
+  double setPoint;
+  double basePower;
+  double ticks;
 
-  public MastGoDownCommand() {
-    requires(Robot.mast);
-  }
+  PIDCorrection pid;
 
-  public MastGoDownCommand(boolean auxStick) {
-    requires(Robot.mast);
-    this.auxStick = auxStick;
+  public DriveByGyro(double setPoint, double basePower, double distance) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.drive);
+    this.setPoint = setPoint;
+    this.basePower = basePower;
+    this.ticks = distance * 1000;
+    pid = new PIDCorrection(0.006);
   }
 
   // Called just before this Command runs the first time
@@ -31,22 +37,43 @@ public class MastGoDownCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    double correction = pid.getCorretion(setPoint, Robot.drive.getYaw());
+
+    double left = basePower;
+    double right = basePower;
+
+    if (Math.abs(correction) >= .25) {
+      correction = .25;
+    }
+
+    if (correction < 0) {
+      left -= correction;
+      right += correction;
+    } else {
+      left += correction;
+      right += correction;
+    }
+
+    Robot.drive.tankDrive(left, right);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.drive.getDistanceLeft() > ticks;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drive.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drive.stop();
   }
 }
