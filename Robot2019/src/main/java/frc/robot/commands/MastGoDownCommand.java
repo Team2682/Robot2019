@@ -11,16 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class MastGoDownCommand extends Command {
+  double distance;
 
-  boolean auxStick;
-
-  public MastGoDownCommand() {
+  public MastGoDownCommand(double distance) {
     requires(Robot.mast);
-  }
-
-  public MastGoDownCommand(boolean auxStick) {
-    requires(Robot.mast);
-    this.auxStick = auxStick;
+    this.distance = distance;
   }
 
   // Called just before this Command runs the first time

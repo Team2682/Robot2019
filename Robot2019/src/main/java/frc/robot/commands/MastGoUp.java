@@ -11,28 +11,23 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class MastGoUp extends Command {
-  boolean auxStick;
+  double distance;
 
-  public MastGoUp() {
+  public MastGoUp(double distance) {
     requires(Robot.mast);
+    this.distance = distance;
 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (auxStick) {
-      if (Robot.oi.auxStick.getRawAxis(1) > .3 || Robot.oi.auxStick.getRawAxis(1) > -.3) {
-        Robot.mast.goUp(Robot.oi.auxStick.getRawAxis(1));
-      } else {
-        Robot.mast.stop();
-      }
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
