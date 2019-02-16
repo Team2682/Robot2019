@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,12 +21,58 @@ public class DriveSystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  TalonSRX motorLeft;
-  TalonSRX motorRight;
+  TalonSRX motorLeftMaster;
+  TalonSRX motorRightMaster;
+
+  TalonSRX motorLeftSlave;
+  TalonSRX motorRightSlave;
+
+  double error;
+
+  public DriveSystem(int canIdLeftMaster, int canIdRightMaster) {
+
+    motorLeftMaster = new TalonSRX(canIdLeftMaster);
+    motorRightMaster = new TalonSRX(canIdRightMaster);
+
+    motorLeftSlave = new TalonSRX(canIdLeftMaster + 2);
+    motorRightSlave = new TalonSRX(canIdLeftMaster + 2);
+
+    initializeMotors();
+
+  }
+
+  public void initializeMotors() {
+    motorRightSlave.follow(motorRightMaster);
+    motorLeftMaster.follow(motorLeftMaster);
+
+    motorLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+    motorRightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+
+    motorLeftMaster.config_kP(0, 0.006);
+    motorLeftMaster.configAllowableClosedloopError(0, 1, 30);
+
+    error = motorLeftMaster.getClosedLoopError(0);
+
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public void tankDrive(double left, double right) {
+    motorLeftMaster.set(ControlMode.PercentOutput, left);
+    motorRightMaster.set(ControlMode.PercentOutput, -right);
+  }
+
+  public void arcadeDrive(double forward, double turn) {
+    motorLeftMaster.set(ControlMode.PercentOutput, turn, DemandType.ArbitraryFeedForward, forward - error);
+    motorRightMaster.set(ControlMode.PercentOutput, -turn, DemandType.ArbitraryFeedForward, forward);
+  }
+
+  public void stop() {
+    motorLeftMaster.set(ControlMode.PercentOutput, 0);
+    motorRightMaster.set(ControlMode.PercentOutput, 0);
   }
 }
