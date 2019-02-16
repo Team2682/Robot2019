@@ -59,5 +59,6 @@ public class OutTakeBall extends Command {
   @Override
   protected void interrupted() {
     Robot.intake.stop();
+    
   }
 }
