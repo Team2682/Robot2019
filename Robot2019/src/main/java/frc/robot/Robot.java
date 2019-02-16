@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,7 +36,7 @@ public class Robot extends TimedRobot {
 
   Command selectedAuto;
 
-  Compressor c = new Compressor(5);
+  public static Compressor c;
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -49,13 +50,16 @@ public class Robot extends TimedRobot {
     mast = new MastSystem();
     drive = new DriveSystem(0, 1);
     intake = new IntakeSystem();
+
+    c = new Compressor(5);
+
     drive.initializeMotors();
-    
+
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", autoChooser);
 
     //c.setClosedLoopControl(true);
-    c.setClosedLoopControl(false); 
+    c.setClosedLoopControl(false);
 
     boolean enabled = c.enabled();
     boolean pressureSwitch = c.getPressureSwitchValue();
