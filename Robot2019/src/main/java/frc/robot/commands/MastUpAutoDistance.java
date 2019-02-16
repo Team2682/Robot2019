@@ -26,23 +26,25 @@ public class MastUpAutoDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.mast.goUp(0.5);
+    Robot.mast.move(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.mast.getDistance() 
+    return Robot.mast.getDistance() >= ticks;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.mast.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.mast.stop();
   }
 }
