@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -21,12 +22,24 @@ public class FourBarLinkageSystem extends Subsystem {
 
   static TalonSRX winchPneumatic = new TalonSRX(1);
 
+  Solenoid pusher = new Solenoid(0);
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
-  public static void goUp() {
-    winchPneumatic.set(ControlMode.PercentOutput, 1);
+
+  public void goDown() {
+    winchPneumatic.set(ControlMode.PercentOutput, -1);
+  }
+
+  public void goUp() {
+    pusher.set(true);
+    winchPneumatic.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void looosen() {
+    pusher.set(false);
   }
 }
