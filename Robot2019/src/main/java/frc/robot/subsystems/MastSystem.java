@@ -31,7 +31,7 @@ public class MastSystem extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public void goUp(double speed) {
+  public void move(double speed) {
     mastMotor.set(ControlMode.PercentOutput, speed);
   }
 
