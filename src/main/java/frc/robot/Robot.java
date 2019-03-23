@@ -27,15 +27,16 @@ public class Robot extends TimedRobot {
       this.c = new Compressor(13);
       this.c.start();
       mast = new MastSystem();
-      drive = new DriveSystem(0, 1);
       intake = new IntakeSystem();
       linkage = new FourBarLinkageSystem();
       oi = new OI();
+      drive = new DriveSystem(0, 1);
       drive.initializeMotors();
       SmartDashboard.putData("Auto mode", this.autoChooser);
       UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
       cam.setExposureManual(50);
-      cam.setResolution(640, 480);
+      cam.setFPS(30);
+      cam.setResolution(320, 240);
    }
 
    public void robotPeriodic() {

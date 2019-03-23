@@ -5,18 +5,22 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.commands.TeleopDriveCommand;
 
 public class DriveSystem extends Subsystem {
-   TalonSRX motorLeftMaster = new TalonSRX(7);
+   TalonSRX motorLeftMaster = new TalonSRX(2);
    TalonSRX motorRightMaster = new TalonSRX(6);
-   TalonSRX motorLeftSlave = new TalonSRX(5);
-   TalonSRX motorRightSlave = new TalonSRX(1);
+   TalonSRX motorLeftSlave = new TalonSRX(1);
+   TalonSRX motorRightSlave = new TalonSRX(7);
    PigeonIMU pigeon;
    double error;
+   JoystickButton resetPid;
 
    public DriveSystem(int canIdLeftMaster, int canIdRightMaster) {
+      this.resetPid = new JoystickButton(Robot.oi.driveStick, 2);
       this.initializeMotors();
    }
 
@@ -45,6 +49,11 @@ public class DriveSystem extends Subsystem {
       this.error = (double)this.motorLeftMaster.getClosedLoopError(0);
       this.motorLeftMaster.set(ControlMode.PercentOutput, turn, DemandType.ArbitraryFeedForward, forward - this.error);
       this.motorRightMaster.set(ControlMode.PercentOutput, -turn, DemandType.ArbitraryFeedForward, forward);
+      if (this.resetPid.get()) {
+         this.error = (double)this.motorLeftMaster.getClosedLoopError(0);
+         this.resetEncoders();
+      }
+
    }
 
    public void stop() {
@@ -63,6 +72,12 @@ public class DriveSystem extends Subsystem {
    public double getYaw() {
       System.out.println(this.pigeon.getFusedHeading());
       return this.pigeon.getFusedHeading();
+   }
+
+   public void resetEncoders() {
+      this.motorLeftMaster.setSelectedSensorPosition(0);
+      this.motorRightMaster.setSelectedSensorPosition(0);
+      System.out.println("reset encs");
    }
 
    public void resetYaw() {

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.MastMove;
 
 public class MastSystem extends Subsystem {
-   public TalonSRX mastMotor = new TalonSRX(2);
+   public TalonSRX mastMotor = new TalonSRX(5);
    public DigitalInput bottom = new DigitalInput(0);
    public DigitalInput top = new DigitalInput(1);
 
@@ -22,7 +22,14 @@ public class MastSystem extends Subsystem {
 
    public void move(double speed) {
       System.out.println(this.bottom.get());
-      this.mastMotor.set(ControlMode.PercentOutput, speed);
+      if (speed <= 0.3D && speed >= -0.3D) {
+         this.stop();
+      } else if (!this.bottom.get() && speed > 0.3D) {
+         this.stop();
+      } else {
+         this.mastMotor.set(ControlMode.PercentOutput, speed);
+      }
+
    }
 
    public void goDown(double speed) {

@@ -1,13 +1,11 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class IntakeBall extends Command {
    double speed;
    int time;
-   Timer timer = new Timer();
    boolean isFinished = false;
 
    public IntakeBall(double percentSpeed, int deciSeconds) {
@@ -17,15 +15,11 @@ public class IntakeBall extends Command {
    }
 
    protected void initialize() {
-      this.timer.reset();
-      this.timer.start();
    }
 
    protected void execute() {
-      if (!Robot.intake.intakeLimit.get()) {
-         Robot.intake.intake(this.speed, this.speed);
-      }
-
+      System.out.println(Robot.intake.intakeLimit.get());
+      Robot.intake.intake(this.speed, this.speed);
    }
 
    protected boolean isFinished() {
@@ -33,7 +27,6 @@ public class IntakeBall extends Command {
    }
 
    protected void end() {
-      Robot.intake.hasBall = true;
       Robot.intake.stop();
    }
 

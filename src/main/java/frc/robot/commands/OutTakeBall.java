@@ -1,13 +1,11 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class OutTakeBall extends Command {
    double speed;
    int time;
-   Timer timer = new Timer();
    boolean isFinished = false;
 
    public OutTakeBall(double percentSpeed, int deciSeconds) {
@@ -17,8 +15,6 @@ public class OutTakeBall extends Command {
    }
 
    protected void initialize() {
-      this.timer.reset();
-      this.timer.start();
    }
 
    protected void execute() {

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class IntakeSystem extends Subsystem {
    public VictorSPX vertR = new VictorSPX(12);
-   public VictorSPX ballAssist = new VictorSPX(11);
+   public VictorSPX vertL = new VictorSPX(11);
    public TalonSRX horz = new TalonSRX(4);
    public DoubleSolenoid hatchGrabber = new DoubleSolenoid(13, 7, 6);
    public DigitalInput intakeLimit = new DigitalInput(2);
@@ -23,7 +23,7 @@ public class IntakeSystem extends Subsystem {
    public void intake(double vertical, double horizontal) {
       if (!this.hasBall) {
          this.vertR.set(ControlMode.PercentOutput, vertical);
-         this.horz.set(ControlMode.PercentOutput, -horizontal);
+         this.vertL.set(ControlMode.PercentOutput, -vertical);
       }
 
    }
@@ -31,22 +31,12 @@ public class IntakeSystem extends Subsystem {
    public void outtake(double vertical, double horizontal) {
       this.hasBall = false;
       this.vertR.set(ControlMode.PercentOutput, vertical);
-   }
-
-   public void assistDown() {
-      this.ballAssist.set(ControlMode.PercentOutput, 0.3D);
-   }
-
-   public void assistUp() {
-      this.ballAssist.set(ControlMode.PercentOutput, -0.7D);
-   }
-
-   public void assistStop() {
-      this.ballAssist.set(ControlMode.PercentOutput, 0.0D);
+      this.vertL.set(ControlMode.PercentOutput, -vertical);
    }
 
    public void stop() {
       this.vertR.set(ControlMode.PercentOutput, 0.0D);
+      this.vertL.set(ControlMode.PercentOutput, 0.0D);
       this.horz.set(ControlMode.PercentOutput, 0.0D);
    }
 }

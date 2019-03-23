@@ -13,7 +13,6 @@ public class HatchIn extends Command {
    }
 
    protected void execute() {
-      System.out.println(Robot.intake.hatchGrabber.get());
       Robot.intake.hatchGrabber.set(DoubleSolenoid.Value.kReverse);
    }
 
