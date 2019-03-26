@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
@@ -18,6 +20,10 @@ public class DriveSystem extends Subsystem {
    PigeonIMU pigeon;
    double error;
    JoystickButton resetPid;
+
+   private boolean m_LimelightHasValidTarget = false;
+   private double m_LimelightDriveCommand = 0.0;
+   private double m_LimelightSteerCommand = 0.0;
 
    public DriveSystem(int canIdLeftMaster, int canIdRightMaster) {
       this.resetPid = new JoystickButton(Robot.oi.driveStick, 2);
@@ -70,7 +76,6 @@ public class DriveSystem extends Subsystem {
    }
 
    public double getYaw() {
-      System.out.println(this.pigeon.getFusedHeading());
       return this.pigeon.getFusedHeading();
    }
 
@@ -82,5 +87,43 @@ public class DriveSystem extends Subsystem {
 
    public void resetYaw() {
       this.pigeon.setFusedHeading(0.0D);
+   }
+
+   public void driveToTape() {
+      final double STEER_K = 0.02;                    // how hard to turn toward the target
+      final double DRIVE_K = 0.16;                    // how hard to drive fwd toward the target
+      final double DESIRED_TARGET_AREA = 2.9;        // Area of the target when the robot reaches the wall
+      final double MAX_DRIVE = 0.4;                   // Simple speed limit so we don't drive too fast
+
+      double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+
+      if (tv < 1.0)
+      {
+        m_LimelightHasValidTarget = false;
+        m_LimelightDriveCommand = 0.0;
+        m_LimelightSteerCommand = 0.0;
+        return;
+      }
+
+      m_LimelightHasValidTarget = true;
+
+      // Start with proportional steering
+      double steer_cmd = -tx * STEER_K;
+      m_LimelightSteerCommand = steer_cmd;
+
+      // try to drive forward until the target area reaches our desired area
+      double drive_cmd = (DESIRED_TARGET_AREA - ta) * DRIVE_K;
+
+      // don't let the robot drive too fast into the goal
+      if (drive_cmd > MAX_DRIVE)
+      {
+        drive_cmd = MAX_DRIVE;
+      }
+      m_LimelightDriveCommand = drive_cmd;
+
+      arcadeDrive(-m_LimelightSteerCommand, m_LimelightDriveCommand);
    }
 }

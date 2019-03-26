@@ -18,7 +18,6 @@ public class IntakeBall extends Command {
    }
 
    protected void execute() {
-      System.out.println(Robot.intake.intakeLimit.get());
       Robot.intake.intake(this.speed, this.speed);
    }
 

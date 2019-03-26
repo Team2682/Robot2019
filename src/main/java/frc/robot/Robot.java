@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +21,10 @@ public class Robot extends TimedRobot {
    public static MastSystem mast;
    public static OI oi;
    public static FourBarLinkageSystem linkage;
+
+   public static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+   public static boolean limeVision = false;
+
    Command selectedAuto;
    Compressor c;
    SendableChooser autoChooser = new SendableChooser();
@@ -40,6 +46,14 @@ public class Robot extends TimedRobot {
    }
 
    public void robotPeriodic() {
+
+      if (!limeVision) {
+         limelight.getEntry("ledMode").setNumber(1);
+         limelight.getEntry("camMode").setNumber(1);
+      } else {
+         limelight.getEntry("ledMode").setNumber(3);
+         limelight.getEntry("camMode").setNumber(0);
+      }
    }
 
    public void disabledInit() {

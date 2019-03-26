@@ -21,15 +21,26 @@ public class MastSystem extends Subsystem {
    }
 
    public void move(double speed) {
-      System.out.println(this.bottom.get());
+      System.out.println(getDistance());
       if (speed <= 0.3D && speed >= -0.3D) {
          this.stop();
       } else if (!this.bottom.get() && speed > 0.3D) {
+         resetDistance();
          this.stop();
       } else {
          this.mastMotor.set(ControlMode.PercentOutput, speed);
       }
 
+   }
+
+   public void goToHeight(double height) {
+      if (getDistance() <= height - 50) {
+         this.mastMotor.set(ControlMode.PercentOutput, -.4);
+      } else if(getDistance() >= height + 50) {
+         this.mastMotor.set(ControlMode.PercentOutput, .4);
+      } else {
+         stop();
+      }
    }
 
    public void goDown(double speed) {
@@ -48,6 +59,6 @@ public class MastSystem extends Subsystem {
    }
 
    public void resetDistance() {
-      this.mastMotor.setSelectedSensorPosition(0, 0, 30);
+      this.mastMotor.setSelectedSensorPosition(0);
    }
 }

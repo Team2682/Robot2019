@@ -20,6 +20,10 @@ public class MastMove extends Command {
 
    protected void execute() {
       Robot.mast.move(Robot.oi.auxStick.getY());
+
+      if (Robot.oi.auxStick.getRawButton(4)) {
+         Robot.mast.goToHeight(56700);
+      }
    }
 
    protected boolean isFinished() {
