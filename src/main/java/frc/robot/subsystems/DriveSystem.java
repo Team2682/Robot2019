@@ -90,9 +90,9 @@ public class DriveSystem extends Subsystem {
    }
 
    public void driveToTape() {
-      final double STEER_K = 0.02;                    // how hard to turn toward the target
+      final double STEER_K = 0.0275;                    // how hard to turn toward the target
       final double DRIVE_K = 0.16;                    // how hard to drive fwd toward the target
-      final double DESIRED_TARGET_AREA = 2.9;        // Area of the target when the robot reaches the wall
+      final double DESIRED_TARGET_AREA = 3.1;        // Area of the target when the robot reaches the wall
       final double MAX_DRIVE = 0.4;                   // Simple speed limit so we don't drive too fast
 
       double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
